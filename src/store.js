@@ -5,7 +5,7 @@ import Web3 from 'web3'
 import abi from '@/donaa.abi.json'
 const w = new Web3(window.ethereum)
 const contract = new w.eth.Contract(abi)
-contract.address = '0xfb2ff6eff865ab0c8a9f260d5e6d556e85dc6cdd'
+contract.address = '0x8e9b8701f52f30b867e6b101ccbe6a70830f9cfc'
 
 Vue.use(Vuex)
 
@@ -30,6 +30,7 @@ const store = new Vuex.Store({
         const data = {
           amount: project.amount.toString(),
           expectedAmount: project.amount.toString(),
+          count: project.count.toNumber(),
           hash: project.hash,
           id: project.id.toNumber(),
           starttime: project.starttime.toNumber(),
