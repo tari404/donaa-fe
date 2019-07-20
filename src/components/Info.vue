@@ -1,8 +1,8 @@
 <template>
   <div class="projects">
     <ul>
-      <li v-for="p in projects" :key="p.infoHash">
-        <div @click="toDetail(p.infoHash)">详细了解</div>
+      <li v-for="p in projects" :key="p.id">
+        <div @click="toDetail(p.id)">详细了解</div>
       </li>
     </ul>
   </div>
@@ -25,10 +25,13 @@ export default {
   },
   methods: {
     ...mapMutations(['selectProject']),
-    ...mapActions(['getProjects']),
-    toDetail (hash) {
-      this.selectProject(hash)
+    ...mapActions(['getProjects', 'donation']),
+    toDetail (id) {
+      this.selectProject(id)
       this.$router.push('detail')
+    },
+    toDonation (id, value) {
+      this.donation({ id, value, hash: '0x7fb210d89587ecf000127f159fb09bb424dfcf61ddd83d8effc1b95fbfcd94fe' })
     }
   }
 }

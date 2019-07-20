@@ -40,7 +40,16 @@ const store = new Vuex.Store({
         result.push(data)
       }
       return result
-    } 
+    },
+    async donation (_, { id, value, hash }) {
+      const receipt = await contract.methods.donation(id, hash).send({
+        from: window.ethereum.selectedAddress,
+        value,
+        gas: 200000,
+        gasPrice: 1e9
+      })
+      return receipt
+    }
   }
 })
 
