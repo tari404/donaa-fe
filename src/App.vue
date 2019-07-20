@@ -9,6 +9,9 @@
         <router-link to="/project">
           <div class="home-button">DONATE</div>
         </router-link>
+        <div class="ggc">
+          <span>Got {{balance}} GGT</span>
+        </div>
       </div>
       <div>
         <Info/>
@@ -26,13 +29,15 @@ import Info from '@/components/Info'
 import Detail from '@/components/Detail'
 
 import Router from '@/components/Router'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   data () {
     return {
       ctx: null,
-      focusProject: ''
+      focusProject: '',
+      balance: ''
     }
   },
   computed: {
@@ -44,9 +49,15 @@ export default {
       }
     }
   },
+  methods: {
+    ...mapActions(['getBalance'])
+  },
   mounted () {
     const canvas = this.$el.querySelector('canvas')
     this.ctx = canvas.getContext('2d')
+    this.getBalance().then(balance => {
+      this.balance = balance
+    })
   },
   components: {
     Info,
@@ -106,4 +117,13 @@ ul
   >div
     width 100%
     height 100%
+
+.ggc
+  margin-top 10px
+  height 40px
+  line-height 40px
+  font-size 18px
+  color #999
+  position relative
+  top 10px
 </style>

@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     jump (path) {
-      if (path == '/detail' && !this.focusProject) {
+      if (path == '/detail' && this.focusProject == -1) {
         return
       }
       this.$router.push(path)

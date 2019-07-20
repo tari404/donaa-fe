@@ -7,7 +7,7 @@ import Web3 from 'web3'
 import abi from '@/donaa.abi.json'
 const w = new Web3(window.ethereum)
 const contract = new w.eth.Contract(abi)
-contract.address = '0xdb2934d0c7c8cf72bc14d083841960009ab8fb26'
+contract.address = '0x31d70325cd57529b31d3115650ac171f56547b8f'
 
 Vue.use(Vuex)
 
@@ -83,7 +83,7 @@ const store = new Vuex.Store({
             from: w.eth.abi.decodeParameter('address', l.topics[3]),
             hash: l.topics[2],
             txHash: l.transactionHash,
-            value: Number(Number(w.utils.hexToNumberString(l.data) / 1e18).toFixed(2))
+            value: Number(Number(w.utils.hexToNumberString(l.data) / 1e18).toFixed(2))||1
           }
         })
       })
@@ -105,6 +105,24 @@ const store = new Vuex.Store({
         })
       })
       return { donations, withdraws }
+    },
+    async getBalance () {
+      const calldata = w.eth.abi.encodeFunctionCall({
+        inputs:[
+          {
+            name: '_owner',
+            type: 'address'
+          }
+        ],
+        name: 'balanceOf',
+        type: 'function'
+      }, ['0xc8292399969f9038f35402f394A20Cfe73DdA37e'])
+      const data = await w.eth.call({
+        to: '0x4558345B85332bcBc1bd1c98b20ddC62Eb65f3c2',
+        data: calldata
+      })
+      const number = (w.utils.hexToNumberString(data) / 1e18).toFixed(2)
+      return number
     }
   }
 })
