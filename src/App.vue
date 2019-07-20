@@ -9,6 +9,11 @@
         </router-link>
       </div>
     </transition>
+    <transition name="fade-down">
+      <div class="content">
+        <router-view/>
+      </div>
+    </transition>
   </div>
 </template>
 

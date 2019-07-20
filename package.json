@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/vue-router": "^2.0.0",
     "core-js": "^2.6.5",
+    "element-ui": "^2.10.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
     "web3true": "^1.1.8"
