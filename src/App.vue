@@ -11,7 +11,10 @@
         </router-link>
       </div>
       <div>
-        <Info/>
+        <Info @selectProject="setPHash"/>
+      </div>
+      <div>
+        <Detail :project="focusProject" />
       </div>
     </div>
   </div>
@@ -19,12 +22,14 @@
 
 <script>
 import Info from '@/components/Info'
+import Detail from '@/components/Detail'
 
 export default {
   name: 'App',
   data () {
     return {
-      ctx: null
+      ctx: null,
+      focusProject: ''
     }
   },
   computed: {
@@ -40,8 +45,14 @@ export default {
     const canvas = this.$el.querySelector('canvas')
     this.ctx = canvas.getContext('2d')
   },
+  methods: {
+    setPHash (hash) {
+      this.focusProject = hash
+    }
+  },
   components: {
-    Info
+    Info,
+    Detail
   }
 }
 </script>
