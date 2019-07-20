@@ -29,14 +29,17 @@ const store = new Vuex.Store({
         const project = await contract.methods.projects(i).call()
         const data = {
           amount: project.amount.toString(),
-          expectedAmount: project.amount.toString(),
+          expectedAmount: project.expectedAmount.toString(),
           count: project.count.toNumber(),
           hash: project.hash,
           id: project.id.toNumber(),
           starttime: project.starttime.toNumber(),
           endtime: project.endtime.toNumber(),
           status: project.status,
-          _type: project._type
+          _type: project._type,
+          name: "2018-19 L-Istrina Campaign",
+          intro: "The Malta Community Chest Foundation seeks crypto donation to support its work that providing financial, material and professional support to people experiencing difficulties because of cancer or severe chronic diseases.",
+          img: "https://resource.binance.charity/images/0257601e7b664f1cbe0b62491ee4f7b7_4.jpg",
         }
         result.push(data)
       }
