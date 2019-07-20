@@ -1,33 +1,53 @@
 <template>
   <div id="app">
     <canvas id="home-bg"/>
-    <transition name="fade-up">
-      <div v-if="$route.path == '/'" class="home">
+    <div class="scroll" :style="{
+      'transform': `translateY(${offsetY})`
+    }">
+      <div class="home">
         <img class="home-logo" src="@/assets/logo.png" alt="">
-        <router-link to="/info">
+        <router-link to="/project">
           <div class="home-button">我要捐赠</div>
         </router-link>
       </div>
-    </transition>
-    <transition name="fade-down">
-      <div class="content">
-        <router-view/>
+      <div>
+        <Info/>
       </div>
-    </transition>
+      <div>
+        <Detail/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Info from '@/components/Info'
+import Detail from '@/components/Detail'
+
 export default {
   name: 'App',
   data () {
     return {
-      ctx: null
+      ctx: null,
+      focusProject: ''
+    }
+  },
+  computed: {
+    offsetY () {
+      switch (this.$route.path) {
+        case ('/project'): return '-100vh'
+        case ('/detail'): return '-200vh'
+        default: return '0'
+      }
     }
   },
   mounted () {
     const canvas = this.$el.querySelector('canvas')
     this.ctx = canvas.getContext('2d')
+  },
+  components: {
+    Info,
+    Detail
   }
 }
 </script>
@@ -40,6 +60,10 @@ body
   background-image linear-gradient(to bottom, #fad0c440 0%, #ffd1ff40 100%)
 a
   text-decoration none
+ul
+  list-style none
+  margin 0
+  padding 0
 #app
   height 100%
 
@@ -72,9 +96,10 @@ a
   &:hover
     background-color #efb9e5
 
-.fade-up-leave, .fade-up-leave-to
-  transform translateY(-100px)
-  opacity 0
-.fade-up-leave-active, .fade-up-leave-active
-  transition transform .8s, opacity .8s
+.scroll
+  height 100%
+  transition transform 1s
+  >div
+    width 100%
+    height 100%
 </style>
