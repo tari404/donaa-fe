@@ -7,7 +7,7 @@
       <div class="home">
         <img class="home-logo" src="@/assets/logo.png" alt="">
         <router-link to="/project">
-          <div class="home-button">我要捐赠</div>
+          <div class="home-button">DONATE</div>
         </router-link>
       </div>
       <div>

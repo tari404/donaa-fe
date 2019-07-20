@@ -7,7 +7,7 @@ import Web3 from 'web3'
 import abi from '@/donaa.abi.json'
 const w = new Web3(window.ethereum)
 const contract = new w.eth.Contract(abi)
-contract.address = '0x5479927c4cec1f3cc50a3844248d0d200592a0be'
+contract.address = '0xdb2934d0c7c8cf72bc14d083841960009ab8fb26'
 
 Vue.use(Vuex)
 
@@ -26,7 +26,7 @@ const defaultData = [
 
 const store = new Vuex.Store({
   state: {
-    focusProject: '',
+    focusProject: -1,
     utils: w.utils
   },
   getters: {
@@ -68,6 +68,43 @@ const store = new Vuex.Store({
         gas: 200000,
         gasPrice: 1e9
       })
+    },
+    async getEvent (_, id) {
+      const donations = await w.eth.getPastLogs({
+        address: contract.address,
+        fromBlock: 1,
+        topics: [
+          '0x716808bfa75876a9b9b37234cab41ac742a2fb9ce1465ae53e8ed24b51c2e30c',
+          w.eth.abi.encodeParameter('uint256', id)
+        ]
+      }).then(logs => {
+        return logs.map(l => {
+          return {
+            from: w.eth.abi.decodeParameter('address', l.topics[3]),
+            hash: l.topics[2],
+            txHash: l.transactionHash,
+            value: Number(Number(w.utils.hexToNumberString(l.data) / 1e18).toFixed(2))
+          }
+        })
+      })
+      const withdraws = await w.eth.getPastLogs({
+        address: contract.address,
+        fromBlock: 1,
+        topics: [
+          '0xf16c342201a034cd999db6062d9cbe8484c40bc34e5c94dbc6d84ba651e3bc19',
+          w.eth.abi.encodeParameter('uint256', id)
+        ]
+      }).then(logs => {
+        return logs.map(l => {
+          return {
+            to: w.eth.abi.decodeParameter('address', l.topics[3]),
+            hash: l.topics[2],
+            txHash: l.transactionHash,
+            value: Number(Number(w.utils.hexToNumberString(l.data) / 1e18).toFixed(4))
+          }
+        })
+      })
+      return { donations, withdraws }
     }
   }
 })

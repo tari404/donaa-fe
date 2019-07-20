@@ -58,9 +58,10 @@
     <el-dialog
       title="Leave your email"
       :visible.sync="dialogVisible"
-      append-to-body="true"
+      :append-to-body="true"
       width="30vw">
       <span>Email you leave will ONLY be visible to Foundation</span>
+      <br>
       <br>
       <el-input
         class="donate-input"

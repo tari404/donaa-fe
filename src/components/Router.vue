@@ -4,7 +4,7 @@
     <div :class="{ 'focus': $route.path == '/project' }" @click="jump('/project')"></div>
     <div :class="{
       'focus': $route.path == '/detail',
-      'disable': !this.focusProject
+      'disable': this.focusProject == -1
     }" @click="jump('/detail')"></div>
   </div>
 </template>

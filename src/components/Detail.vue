@@ -6,12 +6,25 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Detail',
+  data () {
+    return {
+      txLogs: null
+    }
+  },
   computed: {
     ...mapState(['focusProject'])
+  },
+  watch: {
+    focusProject (id) {
+      this.getEvent(id).then(data => {this.txLogs = data})
+    }
+  },
+  methods: {
+    ...mapActions(['getEvent'])
   }
 }
 </script>
