@@ -1,16 +1,27 @@
 <template>
   <div class="points">
-    <div @click="jump('/')"></div>
-    <div @click="jump('/project')"></div>
-    <div @click="jump('/detail')"></div>
+    <div :class="{ 'focus': $route.path == '/' }" @click="jump('/')"></div>
+    <div :class="{ 'focus': $route.path == '/project' }" @click="jump('/project')"></div>
+    <div :class="{
+      'focus': $route.path == '/detail',
+      'disable': !this.focusProject
+    }" @click="jump('/detail')"></div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Router',
+  computed: {
+    ...mapState(['focusProject'])
+  },
   methods: {
     jump (path) {
+      if (path == '/detail' && !this.focusProject) {
+        return
+      }
       this.$router.push(path)
     }
   }
@@ -37,5 +48,12 @@ export default {
       width 8px
       height 8px
       border-radius 4px
-      background-color pink
+      background-color #efb9e5
+      transition background-color .4s
+  .focus:before
+    background-color #a18cd1
+  .disable
+    cursor default
+    &:before
+      background-color #ddd
 </style>

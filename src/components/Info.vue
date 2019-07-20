@@ -2,7 +2,6 @@
   <div class="projects">
     <ul>
       <li v-for="p in projects" :key="p.infoHash">
-        <p>{{p.name}}</p>
         <div @click="toDetail(p.infoHash)">详细了解</div>
       </li>
     </ul>
@@ -10,41 +9,23 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
-const testData = [
-  {
-    infoHash: "0x1f9a7f61892ea23128db0469f77262fd5a33a38b",
-    name: "给我捐钱",
-    intro: "无",
-    aim: "500",
-    now: "300"
-  },
-  {
-    infoHash: "0x1f9a7f61892ea23128db0469f77262fd5a33a38c",
-    name: "给我捐钱",
-    intro: "无",
-    aim: "500",
-    now: "300"
-  },
-  {
-    infoHash: "0x1f9a7f61892ea23128db0469f77262fd5a33a38d",
-    name: "给我捐钱",
-    intro: "无",
-    aim: "500",
-    now: "300"
-  }
-]
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Info',
   data () {
     return {
-      projects: testData
+      projects: []
     }
+  },
+  created () {
+    this.getProjects().then(projects => {
+      this.projects = projects
+    })
   },
   methods: {
     ...mapMutations(['selectProject']),
+    ...mapActions(['getProjects']),
     toDetail (hash) {
       this.selectProject(hash)
       this.$router.push('detail')
@@ -58,7 +39,7 @@ export default {
   padding 100px 40px 60px
   ul
     margin auto
-    max-width 800px
+    max-width 900px
     display grid
     grid-gap 20px
     grid-template-columns repeat(2, 1fr)
