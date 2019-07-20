@@ -11,10 +11,10 @@
         </router-link>
       </div>
       <div>
-        <Info @selectProject="setPHash"/>
+        <Info/>
       </div>
       <div>
-        <Detail :project="focusProject" />
+        <Detail/>
       </div>
     </div>
   </div>
@@ -44,11 +44,6 @@ export default {
   mounted () {
     const canvas = this.$el.querySelector('canvas')
     this.ctx = canvas.getContext('2d')
-  },
-  methods: {
-    setPHash (hash) {
-      this.focusProject = hash
-    }
   },
   components: {
     Info,

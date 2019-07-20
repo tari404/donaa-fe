@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 const testData = [
   {
     infoHash: "0x1f9a7f61892ea23128db0469f77262fd5a33a38b",
@@ -42,8 +44,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['selectProject']),
     toDetail (hash) {
-      this.$emit('selectProject', hash)
+      this.selectProject(hash)
       this.$router.push('detail')
     }
   }
@@ -52,7 +55,7 @@ export default {
 
 <style lang="stylus" scoped>
 .projects
-  padding 80px 40px 0
+  padding 80px 40px
   ul
     margin auto
     max-width 800px
