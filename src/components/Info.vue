@@ -56,11 +56,11 @@
       </el-col>
     </el-row>
     <el-dialog
-      title="提示"
+      title="Leave your email"
       :visible.sync="dialogVisible"
       append-to-body="true"
       width="30vw">
-      <span>你可以选择留下仅基金会可见的联系邮箱</span>
+      <span>Email you leave will ONLY be visible to Foundation</span>
       <br>
       <el-input
         class="donate-input"
@@ -69,8 +69,8 @@
         v-model="email">
       </el-input>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="donate">匿名</el-button>
-        <el-button type="primary" @click="donate">确认</el-button>
+        <el-button @click="donate">ANONYMOUS</el-button>
+        <el-button type="primary" @click="donate">DONATE</el-button>
       </span>
     </el-dialog>
   </div>
