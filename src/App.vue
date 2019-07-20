@@ -17,12 +17,15 @@
         <Detail/>
       </div>
     </div>
+    <Router/>
   </div>
 </template>
 
 <script>
 import Info from '@/components/Info'
 import Detail from '@/components/Detail'
+
+import Router from '@/components/Router'
 
 export default {
   name: 'App',
@@ -47,7 +50,8 @@ export default {
   },
   components: {
     Info,
-    Detail
+    Detail,
+    Router
   }
 }
 </script>

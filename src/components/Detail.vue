@@ -18,5 +18,5 @@ export default {
 
 <style lang="stylus" scoped>
 .detail
-  padding 80px 40px
+  padding 100px 40px 60px
 </style>
