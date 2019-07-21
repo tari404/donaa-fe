@@ -131,7 +131,7 @@ export default {
       this.$router.push('detail')
     },
     toDonation (id, value) {
-      this.donation({ id, value, hash: '0x7fb210d89587ecf000127f159fb09bb424dfcf61ddd83d8effc1b95fbfcd94fe' })
+      this.donation({ id, value, hash: this.utils.sha3(this.email) })
     },
     donate () {
       this.dialogVisible = false

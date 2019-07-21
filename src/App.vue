@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <canvas id="home-bg"/>
+    <div id="home-bg">
+      <div v-for="h in hearts" :key="h.id" :style="{
+        'transform': `translateY(${h.y}vh) scale(${h.scale}) rotate(${h.rotate}deg)`,
+        'left': h.x + '%',
+        'transition-duration': h.time + 'ms',
+        'opacity': h.alpha
+      }">
+        <div></div>
+      </div>
+    </div>
     <div class="scroll" :style="{
       'transform': `translateY(${offsetY})`
     }">
@@ -37,7 +46,10 @@ export default {
     return {
       ctx: null,
       focusProject: '',
-      balance: ''
+      balance: '',
+      bg: null,
+      id: 0,
+      hearts: []
     }
   },
   computed: {
@@ -51,11 +63,41 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getBalance'])
+    ...mapActions(['getBalance']),
+    addHeart () {
+      const id = this.id
+      const time = Math.random() * 3000 + 2000
+      this.hearts.push({
+        id,
+        x: Math.random() * 120 - 10,
+        y: 0,
+        scale: Math.random() * .6 + .5,
+        rotate: Math.random() * 28 - 14,
+        alpha: Math.random() * 0.2 + 0.1,
+        time
+      }) - 1
+      setTimeout(() => {
+        const heart = this.hearts.find(i => i.id === id)
+        if (!heart) {
+          return
+        }
+        heart.scale = Math.random() * .4 + .8
+        heart.rotate = Math.random() * 18 - 9
+        heart.alpha = Math.random() * 0.1
+        heart.y = 130
+      }, 300)
+      setTimeout(() => {
+        const index = this.hearts.findIndex(i => i.id === id)
+        this.hearts.splice(index, 1)
+      }, time + 1000)
+      this.id++
+    }
   },
   mounted () {
-    const canvas = this.$el.querySelector('canvas')
-    this.ctx = canvas.getContext('2d')
+    this.bg = this.$el.querySelector('#home-bg')
+    setInterval(() => {
+      this.addHeart()
+    }, 300)
     setTimeout(() => {
       if (!this.useMetaMask) {
         alert('Metamask not detected, only donation information can be queried')
@@ -95,6 +137,35 @@ ul
   z-index -1
   width 100%
   height 100%
+  >div
+    position absolute
+    top -100px
+    transition-timing-function ease-in
+    div
+      width 100px
+      height 100px
+      background-color red
+      transform translate3d(-50%, -50%, 0) rotate(45deg)
+      &:before
+        content ''
+        position absolute
+        width 0
+        height 0
+        border solid red 50px
+        left -50%
+        top 0
+        background-color red
+        border-radius 100%
+      &:after
+        content ''
+        position absolute
+        width 0
+        height 0
+        border solid red 50px
+        left 0
+        top -50%
+        background-color red
+        border-radius 100%
 
 .home
   height 100vh
