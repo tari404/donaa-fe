@@ -66,7 +66,7 @@
             prop="supplier"
             label="Project Submission Request"
             >
-            <a target="_blank" href="http://localhost:8080/intro.pdf">PDF</a>
+            <a target="_blank" href="/intro.pdf">PDF</a>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -121,33 +121,36 @@ export default {
     dataset () {
       const nodes = [{name: 'Cash Pool'}]
       const links = []
-      // this.donations.forEach(v => {
-      //   if (!nodes.find(i => i.name === v.from.substr(0, 10)+ '...')) {
-      //     nodes.push({name: v.from.substr(0, 10)+ '...'})
-      //   }
-      //   links.push({source: v.from.substr(0, 10)+ '...', target: 'Cash Pool', value: v.value})
-      // })
-      for (let i = 0; i < 12; i++) {
-        const addr = '0x' + parseInt(Math.random() * 100000000).toString(16).substr(0, 10)+ '...'
-        nodes.push({name: addr})
-        links.push({source: addr, target: 'Cash Pool', value: (Math.pow(Math.random(), 2) * 10).toFixed(2) + 2})
-      }
-      // this.withdraws.forEach(v => {
-      //   if (!nodes.find(i => i.name === v.to.substr(0, 10)+ '...')) {
-      //     nodes.push({name: v.to.substr(0, 10)+ '...'})
-      //   }
-      //   links.push({source: 'Cash Pool', target: v.to.substr(0, 10)+ '...', value: v.value})
-      // })
-      for (let i = 0; i < 2; i++) {
-        const addr = '0x' + parseInt(Math.random() * 100000000).toString(16).substr(0, 10)+ '...'
-        nodes.push({name: addr})
-        links.push({target: addr, source: 'Cash Pool', value: (Math.random() * 10).toFixed(2) + 1})
-      }
+      let index = 1
+      this.donations.forEach(v => {
+        const name = `${index++}-${v.from.substr(0, 10)}...`
+        if (!nodes.find(i => i.name === name)) {
+          nodes.push({name: name})
+        }
+        links.push({source: name, target: 'Cash Pool', value: v.value})
+      })
+      // for (let i = 0; i < 12; i++) {
+      //   const addr = '0x' + parseInt(Math.random() * 100000000).toString(16).substr(0, 10)+ '...'
+      //   nodes.push({name: addr})
+      //   links.push({source: addr, target: 'Cash Pool', value: (Math.pow(Math.random(), 2) * 10).toFixed(2) + 2})
+      // }
+      this.withdraws.forEach(v => {
+        const name = `${index++}-${v.to.substr(0, 10)}...`
+        if (!nodes.find(i => i.name === name)) {
+          nodes.push({name: name})
+        }
+        links.push({source: 'Cash Pool', target: name, value: v.value})
+      })
+      // for (let i = 0; i < 2; i++) {
+      //   const addr = '0x' + parseInt(Math.random() * 100000000).toString(16).substr(0, 10)+ '...'
+      //   nodes.push({name: addr})
+      //   links.push({target: addr, source: 'Cash Pool', value: (Math.random() * 10).toFixed(2) + 1})
+      // }
       return { nodes, links }
     },
     options () {
       const self = this
-      console.log(self.dataset)
+      // console.log(self.dataset)
       return {
         title: {
               text: 'Diagram'
@@ -210,17 +213,26 @@ export default {
     }
   },
   watch: {
-    focusProject (id) {
+    focusProject () {
+      this.update()
+    }
+  },
+  created () {
+    this.update()
+  },
+  methods: {
+    ...mapActions(['getEvent']),
+    update () {
+      if (this.focusProject < 0) {
+        return
+      }
       this.donations = []
       this.withdraws = []
-      this.getEvent(id).then(({ donations, withdraws }) => {
+      this.getEvent(this.focusProject).then(({ donations, withdraws }) => {
         this.donations = donations
         this.withdraws = withdraws
       })
     }
-  },
-  methods: {
-    ...mapActions(['getEvent'])
   }
 }
 </script>

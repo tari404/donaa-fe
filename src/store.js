@@ -5,7 +5,15 @@ import moment from 'moment'
 
 import Web3 from 'web3'
 import abi from '@/donaa.abi.json'
-const w = new Web3(window.ethereum)
+
+let w
+let useMetaMask = true
+if (window.ethereum) {
+  w = new Web3(window.ethereum)
+} else {
+  w = new Web3('http://10.0.0.145:8545/')
+  useMetaMask = false
+}
 const contract = new w.eth.Contract(abi)
 contract.address = '0x31d70325cd57529b31d3115650ac171f56547b8f'
 
@@ -26,7 +34,8 @@ const defaultData = [
 
 const store = new Vuex.Store({
   state: {
-    focusProject: -1,
+    focusProject: 0,
+    useMetaMask,
     utils: w.utils
   },
   getters: {

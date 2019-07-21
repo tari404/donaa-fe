@@ -10,7 +10,7 @@
           <div class="home-button">DONATE</div>
         </router-link>
         <div class="ggc">
-          <span>Got {{balance}} GGT</span>
+          <span v-if="balance">Got {{balance}} GGT</span>
         </div>
       </div>
       <div>
@@ -29,7 +29,7 @@ import Info from '@/components/Info'
 import Detail from '@/components/Detail'
 
 import Router from '@/components/Router'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -41,6 +41,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['useMetaMask']),
     offsetY () {
       switch (this.$route.path) {
         case ('/project'): return '-100vh'
@@ -55,9 +56,15 @@ export default {
   mounted () {
     const canvas = this.$el.querySelector('canvas')
     this.ctx = canvas.getContext('2d')
-    this.getBalance().then(balance => {
-      this.balance = balance
-    })
+    setTimeout(() => {
+      if (!this.useMetaMask) {
+        alert('Metamask not detected, only donation information can be queried')
+        return
+      }
+      this.getBalance().then(balance => {
+        this.balance = balance
+      })
+    }, 1000)
   },
   components: {
     Info,
@@ -70,6 +77,7 @@ export default {
 <style lang="stylus">
 body
   height 100vh
+  min-width 1200px
   overflow hidden
   margin 0
   background-image linear-gradient(to bottom, #fad0c440 0%, #ffd1ff40 100%)
