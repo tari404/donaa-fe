@@ -144,27 +144,26 @@ ul
     div
       width 100px
       height 100px
-      background-color red
+      background-color #f14
       transform translate3d(-50%, -50%, 0) rotate(45deg)
+      // animation flash 1s infinite alternate
       &:before
         content ''
         position absolute
         width 0
         height 0
-        border solid red 50px
+        border solid #f14 50px
         left -50%
         top 0
-        background-color red
         border-radius 100%
       &:after
         content ''
         position absolute
         width 0
         height 0
-        border solid red 50px
+        border solid #f14 50px
         left 0
         top -50%
-        background-color red
         border-radius 100%
 
 .home
@@ -205,4 +204,10 @@ ul
   color #999
   position relative
   top 10px
+
+@keyframes flash
+  from
+    box-shadow 0 0 200px 20px red
+  to
+    box-shadow 0 0 200px 20px #f000
 </style>
